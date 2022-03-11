@@ -8,25 +8,25 @@ import org.junit.Test;
  * Requirement: Any classes you create must reside in the `lab5` package.
  */
 public class TestOnlineSchool {
-	
-	/* 
+
+	/*
 	 * Requirement: Any classes you add to the `lab5` package must not import any Java library (e.g., ArrayList).
-	 * 
+	 *
 	 * Tests included in this class serve as documentation on how instances of an online school operates.
-	 * 
+	 *
 	 * Programming IDEs such as IntelliJ are able to fix such compilation errors for you.
 	 * However, you are advised to follow the guidance as specified in the written notes above
-	 * to fix these compilation errors manually, because: 
-	 * 	1) it helps you better understand how the intended classes and methods work together; and 
+	 * to fix these compilation errors manually, because:
+	 * 	1) it helps you better understand how the intended classes and methods work together; and
 	 * 	2) you may be tested in a written test or exam without the assistance of IDEs.
-	 * 
+	 *
 	 */
-	
+
 	/*
-	 * Recommended exercises: 
+	 * Recommended exercises:
 	 * 	Visualizing and tracing (on both debugger and paper) on how objects are created and manipulated
 	 * 	in each test would be extremely valuable for reinforcing your understanding.
-	 */ 
+	 */
 	@Test
 	public void test_01() {
 		Instructor i = new Instructor("Jackie", 70130, "jackie@eecs.yorku.ca");
@@ -34,56 +34,56 @@ public class TestOnlineSchool {
 		int ext = i.getPhoneExtension();
 		String contact = i.getEmail();
 		String info = i.getInformation();
-		
+
 		assertEquals("Jackie", name);
 		assertEquals(70130, ext);
 		assertEquals("jackie@eecs.yorku.ca", contact);
 		assertEquals("Instructor Jackie has campus phone extension 70130 and contact email jackie@eecs.yorku.ca", info);
-		
+
 		i.setName("Jonathan");
 		i.setPhoneExtension(70139);
 		i.setEmail("jonathan@yorku.ca");
-		
+
 		assertEquals("Jonathan", i.getName());
 		assertEquals(70139, i.getPhoneExtension());
 		assertEquals("jonathan@yorku.ca", i.getEmail());
 		assertEquals("Instructor Jonathan has campus phone extension 70139 and contact email jonathan@yorku.ca", i.getInformation());
 	}
-	
+
 	/*
-	 * Recommended exercises: 
+	 * Recommended exercises:
 	 * 	Visualizing and tracing (on both debugger and paper) on how objects are created and manipulated
 	 * 	in each test would be extremely valuable for reinforcing your understanding.
-	 */ 
+	 */
 	@Test
 	public void test_02a() {
 		Registration r = new Registration("Software Design");
 		String t = r.getTitle();
 		int m = r.getMarks();
 		Instructor i = r.getInstructor();
-		/* Size of returned array should be 2: 
+		/* Size of returned array should be 2:
 		 * 	- 1st element denotes the letter grade.
-		 * 	- 2nd element denotes its qualitative description (see the mapping table in the instructions PDF). 
+		 * 	- 2nd element denotes its qualitative description (see the mapping table in the instructions PDF).
 		 */
-		String[] gr = r.getGradeReport(); 
+		String[] gr = r.getGradeReport();
 		/* Returned information only displays the marks, grade, and description when there is an instructor. */
-		String info = r.getInformation(); 
-		
+		String info = r.getInformation();
+
 		assertEquals("Software Design", t);
-		assertEquals(0, m); 
+		assertEquals(0, m);
 		assertNull(i);
 		assertTrue(gr.length == 2 && gr[0].equals("F") && gr[1].equals("Failing"));
 		assertEquals("Software Design has not yet been assigned an instructor", info);
-		
+
 		Instructor jackie = new Instructor("Jackie", 70130, "jackie@eecs.yorku.ca");
-		r.setInstructor(jackie); 
-		
+		r.setInstructor(jackie);
+
 		assertEquals("Software Design", r.getTitle());
-		assertEquals(0, r.getMarks()); 
-		assertTrue(r.getInstructor() != null 
+		assertEquals(0, r.getMarks());
+		assertTrue(r.getInstructor() != null
 				&& r.getInstructor() == jackie /* reference aliasing */
 				/* Q. Can you visualize this chain of method calls? */
-				&& r.getInstructor().getName().equals("Jackie") 
+				&& r.getInstructor().getName().equals("Jackie")
 				&& r.getInstructor().getPhoneExtension() == 70130
 				&& r.getInstructor().getEmail().equals("jackie@eecs.yorku.ca"));
 		assertTrue(r.getGradeReport().length == 2);
@@ -93,55 +93,55 @@ public class TestOnlineSchool {
 		 * 	- Title of course
 		 * 	- Name of instructor
 		 * 	- Numerical marks, the corresponding letter grade, and its qualitative description.
-		 * 
+		 *
 		 *  Note. Here we only test one case of mapping from marks to its grade and description.
 		 *        You should test other cases (see the mapping table in the instructions PDF).
 		 */
 		assertEquals("Software Design, taught by Jackie, is completed with raw marks 0 (F ; Failing)", r.getInformation());
-		
+
 		r.setMarks(61);
-		
+
 		assertEquals(61, r.getMarks());
-		assertTrue(r.getGradeReport().length == 2 
-				&& r.getGradeReport()[0].equals("C") 
+		assertTrue(r.getGradeReport().length == 2
+				&& r.getGradeReport()[0].equals("C")
 				&& r.getGradeReport()[1].equals("Competent"));
 		assertEquals("Software Design, taught by Jackie, is completed with raw marks 61 (C ; Competent)", r.getInformation());
-		
+
 		Instructor jim = new Instructor("Jim Davies", 70139, "jim@yorku.ca");
 		r.setInstructor(jim);
-		
+
 		/* Q. Can you visualize why this assertion is true? */
-		assertTrue(r.getInstructor() != null 
-				&& r.getInstructor() != jackie 
+		assertTrue(r.getInstructor() != null
+				&& r.getInstructor() != jackie
 				&& r.getInstructor() == jim);
 		assertEquals("Software Design, taught by Jim Davies, is completed with raw marks 61 (C ; Competent)", r.getInformation());
 	}
-	
+
 	/*
-	 * Recommended exercises: 
+	 * Recommended exercises:
 	 * 	Visualizing and tracing (on both debugger and paper) on how objects are created and manipulated
 	 * 	in each test would be extremely valuable for reinforcing your understanding.
-	 */ 
+	 */
 	@Test
 	public void test_02b() {
-		/* Second argument of the constructor call is an anonymous object: 
-		 * 	new Instructor("J. Gibbons", 76283, "jeremy@yorku.ca") 
+		/* Second argument of the constructor call is an anonymous object:
+		 * 	new Instructor("J. Gibbons", 76283, "jeremy@yorku.ca")
 		 */
 		Registration r = new Registration("Data Structures", new Instructor("J. Gibbons", 76283, "jeremy@yorku.ca"));
 		r.setMarks(73);
-		
+
 		assertEquals("Data Structures", r.getTitle());
 		assertEquals(73, r.getMarks());
 		assertTrue(r.getInstructor().getName().equals("J. Gibbons")
 				&& r.getInstructor().getPhoneExtension() == 76283
 				&& r.getInstructor().getEmail().equals("jeremy@yorku.ca")
 				&& r.getInstructor().getInformation().equals("Instructor J. Gibbons has campus phone extension 76283 and contact email jeremy@yorku.ca"));
-		assertTrue(r.getGradeReport().length == 2 
-				&& r.getGradeReport()[0].equals("B") 
+		assertTrue(r.getGradeReport().length == 2
+				&& r.getGradeReport()[0].equals("B")
 				&& r.getGradeReport()[1].equals("Good"));
 		assertEquals("Data Structures, taught by J. Gibbons, is completed with raw marks 73 (B ; Good)", r.getInformation());
 	}
-	
+
 	/*
 	 * Recommended exercises:
 	 * 	Visualizing and tracing (on both debugger and paper) on how objects are created and manipulated
@@ -183,13 +183,15 @@ public class TestOnlineSchool {
 				&& suyeon.getRegistrations()[0] == r1
 				&& suyeon.getRegistrations()[1].getTitle().equals("Heavy Metal Music")
 				&& suyeon.getRegistrations()[1].getInstructor() == null);
+
 		assertTrue(suyeon.getRegistrations()[0].getMarks() == 0);
 		assertTrue(suyeon.getRegistrations()[1].getMarks() == 0);
 		assertTrue(suyeon.marksOf("Intro. to OOP") == 0); /* now a registered course */
 		assertTrue(suyeon.marksOf("Heavy Metal Music") == 0); /* now a registered course */
 		assertTrue(suyeon.marksOf("Psychology I") == -1); /* still a non-registered course */
-
 		suyeon.getRegistrations()[1].setInstructor(mark);
+		//"Heavy Metal Music's instructor : M. Lawford//
+		//"Heavy Metal Music"'s data type is registration with name
 
 		assertTrue(suyeon.getRegistrations()[1].getInstructor() == mark);
 
@@ -353,7 +355,7 @@ public class TestOnlineSchool {
 		assertTrue(school.getParticipants("How to Make Fish and Chips").length == 0);
 	}
 
-	/* You may want to write a test similar to test03b:
-	 * an online school can be added up to 100 participants.
-	 */
+//	/* You may want to write a test similar to test03b:
+//	 * an online school can be added up to 100 participants.
+//	 */
 }
